@@ -199,16 +199,6 @@ with tab1:
         )
     
     if input_text:
-        # Advanced settings in expander
-        with st.expander("⚙️ Advanced Settings", expanded=False):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                max_length = st.slider("Max Summary Length (words):", 30, 500, 150, step=10)
-            with col2:
-                min_length = st.slider("Min Summary Length (words):", 10, 200, 30, step=5)
-            with col3:
-                num_beams = st.slider("Beam Search Width:", 1, 8, 4, step=1)
-        
         # Summarize button
         if st.button("✨ Generate Summary", key="summarize_btn", use_container_width=True):
             with st.spinner("🤖 AI is working on your summary..."):
@@ -218,9 +208,9 @@ with tab1:
                     model,
                     tokenizer,
                     device,
-                    max_length=max_length,
-                    min_length=min_length,
-                    num_beams=num_beams
+                    max_length=200,
+                    min_length=50,
+                    num_beams=4
                 )
                 end_time = time.time()
             
@@ -365,14 +355,13 @@ with tab3:
     
     with col1:
         st.subheader("Model Information")
-        st.write("""
-        - **Model Type:** T5 (Text-To-Text Transfer Transformer)
-        - **Task:** Text Summarization
-        - **Model Size:** 768 hidden dimensions
-        - **Layers:** 12 encoder + 12 decoder layers
-        - **Heads:** 12 attention heads
-        - **Vocabulary:** 32,128 tokens
-        - **Max Sequence Length:** 512 tokens
+        st.write(f"""
+        - **Model Type:** {model.__class__.__name__}
+        - **Hidden Size:** {model.config.d_model}
+        - **Encoder Layers:** {model.config.num_layers}
+        - **Decoder Layers:** {model.config.num_decoder_layers}
+        - **Attention Heads:** {model.config.num_heads}
+        - **Vocabulary Size:** {model.config.vocab_size}
         """)
     
     with col2:
@@ -418,7 +407,6 @@ with tab4:
     ### ✨ Key Features
     - **Interactive UI**: User-friendly interface built with Streamlit
     - **Real-time Processing**: Get summaries instantly
-    - **Customizable Parameters**: Adjust summary length and beam search settings
     - **Advanced Statistics**: View compression ratios and processing metrics
     - **Sample Texts**: Quick demo with pre-loaded examples
     - **Export Options**: Download summaries in multiple formats
