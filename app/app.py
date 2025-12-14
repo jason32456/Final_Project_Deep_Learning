@@ -56,7 +56,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     """Load the T5 model and tokenizer"""
-    model_path = "BrianAlex1/t5-summarizer-news"
+    model_path = "BrianAlex1/flan-t5-base-summarizer-news-model"
     
     try:
         model = T5ForConditionalGeneration.from_pretrained(model_path)
